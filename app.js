@@ -1,6 +1,6 @@
 // API Keys
-const chatgptApiKey = 'YOUR_CHATGPT_API_KEY'; // Replace with your actual API key
-const geminiApiKey = 'YOUR_GEMINI_API_KEY'; // Replace with your actual API key
+const chatgptApiKey = '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'; // Replace with your actual API key
+const geminiApiKey = 'AIzaSyDZeFAgMdO4E96rmLDwnM9VKvyspTTv4N4'; // Replace with your actual API key
 
 // Dark Mode Toggle
 document.getElementById('dark-mode-toggle').addEventListener('change', toggleDarkMode);
@@ -137,4 +137,5 @@ async function callGeminiAPI(message) {
 function speakMessage(message) {
   const utterance = new SpeechSynthesisUtterance(message);
   speechSynthesis.speak(utterance);
-                     }
+  }
+    
