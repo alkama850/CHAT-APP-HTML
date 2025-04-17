@@ -1,39 +1,47 @@
-// server.js
-
 require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const path = require('path');
 const cors = require('cors');
 
-// Create an Express application
+// Create an Express app
 const app = express();
-
-// Middleware for parsing JSON and handling CORS
 app.use(express.json());
 app.use(cors());
 
-// Set the port for the server
+// Set port
 const PORT = process.env.PORT || 5000;
 
-// Serve static files (HTML, CSS, JS) from the public directory
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve static assets (CSS, JS, images)
+app.use(express.static(path.join(__dirname)));
 
 // Test route
 app.get('/test', (req, res) => {
   res.send('Server is working fine!');
 });
 
-// Route for calling the ChatGPT API
+// Serve index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Serve chatgpt.html
+app.get('/chatgpt', (req, res) => {
+  res.sendFile(path.join(__dirname, 'chatgpt.html'));
+});
+
+// Serve gemini.html
+app.get('/gemini', (req, res) => {
+  res.sendFile(path.join(__dirname, 'gemini.html'));
+});
+
+// ChatGPT API route
 app.post('/api/chatgpt', async (req, res) => {
   const userMessage = req.body.message;
-  
-  if (!userMessage) {
-    return res.status(400).send({ error: 'Message is required' });
-  }
+  if (!userMessage) return res.status(400).send({ error: 'Message is required' });
 
   try {
-    const response = await axios.post('https://api.openai.com/v1/completions', {
+    const response = await axios.post('https://api.openai.com/v1/chat/completions', {
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: userMessage }]
     }, {
@@ -46,23 +54,19 @@ app.post('/api/chatgpt', async (req, res) => {
     const botMessage = response.data.choices[0].message.content;
     res.send({ reply: botMessage });
   } catch (error) {
-    console.error('Error calling ChatGPT API:', error);
-    res.status(500).send({ error: 'An error occurred while communicating with ChatGPT.' });
+    console.error('ChatGPT API Error:', error?.response?.data || error.message);
+    res.status(500).send({ error: 'Error with ChatGPT API' });
   }
 });
 
-// Route for calling the Gemini API
+// Gemini API route
 app.post('/api/gemini', async (req, res) => {
   const userMessage = req.body.message;
-  
-  if (!userMessage) {
-    return res.status(400).send({ error: 'Message is required' });
-  }
+  if (!userMessage) return res.status(400).send({ error: 'Message is required' });
 
   try {
-    const response = await axios.post('https://api.gemini.com/v1/chat', {
-      query: userMessage,
-      max_tokens: 150
+    const response = await axios.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
+      contents: [{ parts: [{ text: userMessage }] }]
     }, {
       headers: {
         'Authorization': `Bearer ${process.env.GEMINI_API_KEY}`,
@@ -70,20 +74,20 @@ app.post('/api/gemini', async (req, res) => {
       }
     });
 
-    const botMessage = response.data.reply;
+    const botMessage = response.data.candidates[0].content.parts[0].text;
     res.send({ reply: botMessage });
   } catch (error) {
-    console.error('Error calling Gemini API:', error);
-    res.status(500).send({ error: 'An error occurred while communicating with Gemini.' });
+    console.error('Gemini API Error:', error?.response?.data || error.message);
+    res.status(500).send({ error: 'Error with Gemini API' });
   }
 });
 
-// Catch-all route to serve index.html for any unknown routes (SPA behavior)
+// Catch-all route (optional)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Start the server
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
