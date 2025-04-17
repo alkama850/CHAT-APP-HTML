@@ -1,0 +1,167 @@
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #333;
+}
+
+/* Chatbox Styles */
+.chat-box {
+  border: 1px solid #ddd;
+  padding: 10px;
+  height: 300px;
+  overflow-y: scroll;
+  background-color: white;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  position: relative;
+}
+
+.chat-box p {
+  margin: 0;
+  padding: 5px 0;
+}
+
+.chat-box .bot-message {
+  color: #007bff;
+}
+
+.chat-box .gemini-message {
+  color: #28a745;
+}
+
+.chat-box p {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  min-height: 50px;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+  background-color: #333;
+  color: white;
+}
+
+.dark-mode .chat-box {
+  background-color: #444;
+  border: 1px solid #666;
+}
+
+.dark-mode button {
+  background-color: #555;
+}
+
+.dark-mode input[type="checkbox"] {
+  background-color: #555;
+}
+
+/* Speech and Text styles */
+button#speech-to-text,
+button#voice-output {
+  background-color: #f39c12;
+  margin-right: 10px;
+}
+
+button#speech-to-text:hover,
+button#voice-output:hover {
+  background-color: #e67e22;
+}
+
+/* Clear Chat button */
+button#clear-chat-button {
+  background-color: #e74c3c;
+  margin-top: 15px;
+}
+
+button#clear-chat-button:hover {
+  background-color: #c0392b;
+}
+
+/* Emoji Picker Styles */
+button#emoji-picker {
+  background-color: #9b59b6;
+  margin-top: 10px;
+}
+
+button#emoji-picker:hover {
+  background-color: #8e44ad;
+}
+
+/* Page Layout */
+textarea, button {
+  display: block;
+  width: 100%;
+}
+
+#chatgpt-send-button, #gemini-send-button {
+  width: auto;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+input[type="checkbox"] {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+}
+
+/* Message Status */
+#message-status {
+  text-align: center;
+  color: #28a745;
+  font-size: 16px;
+  margin-top: 10px;
+}
