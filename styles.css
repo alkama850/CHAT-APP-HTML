@@ -1,0 +1,181 @@
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7fafc;
+  color: #333;
+}
+
+/* Container Styling */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header Styling */
+header {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Chatbox Styling */
+.chatbox {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  height: 400px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+/* User and Bot Message Styling */
+.user-message {
+  background-color: #DCF8C6;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 12px;
+  align-self: flex-end;
+  max-width: 70%;
+}
+
+.bot-message {
+  background-color: #e1e1e1;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 12px;
+  align-self: flex-start;
+  max-width: 70%;
+}
+
+/* Button Styling */
+button {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 12px 24px;
+  margin: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+  background-color: #2d3748;
+  color: #fff;
+}
+
+.dark-mode .chatbox {
+  background-color: #4a5568;
+}
+
+.dark-mode .user-message {
+  background-color: #68d391;
+}
+
+.dark-mode .bot-message {
+  background-color: #a0aec0;
+}
+
+/* Chat Section Styling */
+.chat-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Custom Input Field Styling */
+input[type="text"] {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 80%;
+}
+
+input[type="text"]:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+/* Switch Toggle Styling */
+input[type="checkbox"] {
+  width: 50px;
+  height: 30px;
+  border-radius: 20px;
+  position: relative;
+  appearance: none;
+  background-color: #e2e8f0;
+  transition: background-color 0.3s;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #4CAF50;
+}
+
+input[type="checkbox"]:before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+input[type="checkbox"]:checked:before {
+  transform: translateX(20px);
+}
+
+/* Buttons for Chatbot Section */
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.button-container button {
+  background-color: #1a202c;
+  color: #fff;
+  margin: 0 10px;
+  transition: background-color 0.3s;
+}
+
+.button-container button:hover {
+  background-color: #2d3748;
+}
+
+/* Spacing Between Elements */
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .chatbox {
+    height: 300px;
+  }
+
+  input[type="text"] {
+    width: 100%;
+  }
+
+  .button-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
