@@ -78,6 +78,12 @@ async function callChatGPTAPI(message) {
 
     try {
         const response = await fetch(`/api/chatgpt?message=${encodeURIComponent(message)}`);
+        
+        // Check if response is successful (status 200)
+        if (!response.ok) {
+            throw new Error(`ChatGPT API error: ${response.status}`);
+        }
+
         const data = await response.json();
 
         if (data.reply) {
@@ -86,7 +92,7 @@ async function callChatGPTAPI(message) {
             addMessageToChat('chatgpt', 'Bot: Error - No response from ChatGPT');
         }
     } catch (error) {
-        console.error('Error in ChatGPT API call:', error);
+        console.error('Error in ChatGPT API call:', error); // Log error details
         addMessageToChat('chatgpt', 'Bot: Something went wrong. Please try again.');
     }
 }
@@ -97,6 +103,12 @@ async function callGeminiAPI(message) {
 
     try {
         const response = await fetch(`/api/gemini?message=${encodeURIComponent(message)}`);
+        
+        // Check if response is successful (status 200)
+        if (!response.ok) {
+            throw new Error(`Gemini API error: ${response.status}`);
+        }
+
         const data = await response.json();
 
         if (data.reply) {
@@ -105,7 +117,7 @@ async function callGeminiAPI(message) {
             addMessageToChat('gemini', 'Bot: Error - No response from Gemini');
         }
     } catch (error) {
-        console.error('Error in Gemini API call:', error);
+        console.error('Error in Gemini API call:', error); // Log error details
         addMessageToChat('gemini', 'Bot: Something went wrong. Please try again.');
     }
-                                                            }
+}
