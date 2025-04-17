@@ -9,10 +9,15 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// Ensure API keys are available
+if (!process.env.OPENAI_API_KEY || !process.env.GEMINI_API_KEY) {
+  console.warn('Warning: Missing API keys in .env file. Make sure OPENAI_API_KEY and GEMINI_API_KEY are set.');
+}
+
 // Set port
 const PORT = process.env.PORT || 5000;
 
-// Serve static assets (CSS, JS, images)
+// Serve static assets (CSS, JS, images) from main directory
 app.use(express.static(path.join(__dirname)));
 
 // Test route
