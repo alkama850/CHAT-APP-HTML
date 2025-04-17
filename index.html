@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Chatbot</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- ChatGPT Section -->
+      <div class="chat-section" id="chatgpt-section">
+        <h2>ChatGPT</h2>
+        <div class="chat-box" id="chatgpt-chat-box"></div>
+        <div class="chat-controls">
+          <textarea id="chatgpt-input" placeholder="Type your message..."></textarea>
+          <button id="chatgpt-send-button">Send</button>
+          <button id="chatgpt-retry-button">Retry</button>
+          <button id="chatgpt-copy-button">Copy</button>
+        </div>
+      </div>
+
+      <!-- Gemini Section -->
+      <div class="chat-section" id="gemini-section">
+        <h2>Gemini</h2>
+        <div class="chat-box" id="gemini-chat-box"></div>
+        <div class="chat-controls">
+          <textarea id="gemini-input" placeholder="Type your message..."></textarea>
+          <button id="gemini-send-button">Send</button>
+          <button id="gemini-retry-button">Retry</button>
+          <button id="gemini-copy-button">Copy</button>
+        </div>
+      </div>
+
+      <!-- Settings Section -->
+      <div class="settings">
+        <button id="settings-button">Settings</button>
+        <label for="dark-mode-toggle">Dark Mode
+          <input type="checkbox" id="dark-mode-toggle" />
+        </label>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+  </html>
