@@ -1,24 +1,24 @@
 {
-  "name": "chatbot-multi-model",
+  "name": "nafij-chatbot-app",
   "version": "1.0.0",
-  "description": "A chatbot app with ChatGPT and Gemini integration",
+  "description": "Advanced ChatGPT and Gemini chatbot by Nafij",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
-    "build": "npm run build",
-    "preview": "vite preview"
+    "start": "node server.js"
   },
-  "dependencies": {
-    "axios": "^1.6.7",
-    "express": "^4.18.1",
-    "dotenv": "^16.0.3",
-    "nodemon": "^2.0.22"
-  },
-  "devDependencies": {
-    "vite": "^4.5.0",
-    "tailwindcss": "^3.4.1"
-  },
+  "keywords": [
+    "chatbot",
+    "chatgpt",
+    "gemini",
+    "express",
+    "nafij"
+  ],
   "author": "Nafij",
-  "license": "ISC"
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.7"
+  }
 }
