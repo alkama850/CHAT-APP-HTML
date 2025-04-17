@@ -179,3 +179,76 @@ input[type="checkbox"]:checked:before {
     align-items: center;
   }
 }
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f4f4f4;
+  transition: background-color 0.3s;
+}
+
+.chat-box {
+  height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  background: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.input-area {
+  display: flex;
+  gap: 10px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.bot-message {
+  color: green;
+}
+
+.user-message {
+  color: blue;
+}
+
+.loading-indicator {
+  display: none;
+  font-size: 16px;
+  color: #555;
+}
+
+#chatgpt-chat-box,
+#gemini-chat-box {
+  height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+}
+
+input[type="text"] {
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 14px;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
