@@ -1,102 +1,111 @@
-// ChatGPT send
-document.getElementById('chatgpt-send-button')?.addEventListener('click', async () => {
-  const input = document.getElementById('chatgpt-input');
-  const chatBox = document.getElementById('chatgpt-chat-box');
-  const message = input.value.trim();
-  if (!message) return;
+// API Keys (ensure these are loaded from the .env file securely on the backend)
+const chatgptApiKey = process.env.OPENAI_API_KEY;
+const geminiApiKey = process.env.GEMINI_API_KEY;
 
-  appendMessage(chatBox, `You: ${message}`, 'user-message');
-  input.value = '';
+// Event listeners for button clicks
+document.getElementById('chatgpt-button')?.addEventListener('click', () => window.location.href = 'chatgpt.html');
+document.getElementById('gemini-button')?.addEventListener('click', () => window.location.href = 'gemini.html');
 
-  toggleLoading(true, 'chatgpt');
-  
-  const response = await fetch('/api/chatgpt', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message })
-  });
+// Dark Mode Toggle
+document.getElementById('dark-mode-toggle')?.addEventListener('change', toggleDarkMode);
 
-  const data = await response.json();
-  toggleLoading(false, 'chatgpt');
-  
-  if (data.reply) {
-    appendMessage(chatBox, `Bot: ${data.reply}`, 'bot-message');
-  } else {
-    appendMessage(chatBox, 'Bot: Sorry, something went wrong.', 'bot-message');
-  }
-});
-
-// Gemini send
-document.getElementById('gemini-send-button')?.addEventListener('click', async () => {
-  const input = document.getElementById('gemini-input');
-  const chatBox = document.getElementById('gemini-chat-box');
-  const message = input.value.trim();
-  if (!message) return;
-
-  appendMessage(chatBox, `You: ${message}`, 'user-message');
-  input.value = '';
-
-  toggleLoading(true, 'gemini');
-
-  const response = await fetch('/api/gemini', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message })
-  });
-
-  const data = await response.json();
-  toggleLoading(false, 'gemini');
-  
-  if (data.reply) {
-    appendMessage(chatBox, `Bot: ${data.reply}`, 'bot-message');
-  } else {
-    appendMessage(chatBox, 'Bot: Sorry, something went wrong.', 'bot-message');
-  }
-});
-
-// Retry button functionality
-document.getElementById('chatgpt-retry-button')?.addEventListener('click', retryChatGPT);
-document.getElementById('gemini-retry-button')?.addEventListener('click', retryGemini);
-
-function retryChatGPT() {
-  const input = document.getElementById('chatgpt-input');
-  input.value = ''; // Clear the input
-  document.getElementById('chatgpt-chat-box').innerHTML = ''; // Clear chat history
+// Function to handle dark mode toggle
+function toggleDarkMode() {
+    if (document.getElementById('dark-mode-toggle')?.checked) {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('darkMode', 'true');
+    } else {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('darkMode', 'false');
+    }
 }
 
-function retryGemini() {
-  const input = document.getElementById('gemini-input');
-  input.value = ''; // Clear the input
-  document.getElementById('gemini-chat-box').innerHTML = ''; // Clear chat history
+// Send button for ChatGPT and Gemini sections
+document.getElementById('chatgpt-send-button')?.addEventListener('click', () => sendMessage('chatgpt'));
+document.getElementById('gemini-send-button')?.addEventListener('click', () => sendMessage('gemini'));
+
+// Function to handle message sending
+function sendMessage(section) {
+    const inputField = document.getElementById(`${section}-input`);
+    const message = inputField.value.trim();
+    if (message) {
+        addMessageToChat(section, `You: ${message}`);
+        inputField.value = '';
+        simulateBotResponse(section, message);
+    }
 }
 
-// Copy button functionality
-document.getElementById('chatgpt-copy-button')?.addEventListener('click', () => copyToClipboard('chatgpt'));
-document.getElementById('gemini-copy-button')?.addEventListener('click', () => copyToClipboard('gemini'));
+// Function to simulate the typing effect in the chat
+function simulateBotResponse(section, userMessage) {
+    const chatBox = document.getElementById(`${section}-chat-box`);
+    const typingMessage = document.createElement('p');
+    typingMessage.textContent = `${section === 'chatgpt' ? 'ChatGPT' : 'Gemini'} is typing...`;
+    chatBox.appendChild(typingMessage);
+    chatBox.scrollTop = chatBox.scrollHeight;
 
-function copyToClipboard(section) {
-  const chatBox = document.getElementById(`${section}-chat-box`);
-  const text = chatBox.innerText || chatBox.textContent;
-  navigator.clipboard.writeText(text)
-    .then(() => alert(`${section.charAt(0).toUpperCase() + section.slice(1)} chat copied to clipboard!`))
-    .catch(err => alert('Failed to copy text: ' + err));
+    setTimeout(() => {
+        typingMessage.textContent = 'Delivered';
+        setTimeout(() => {
+            typingMessage.remove();
+            if (section === 'chatgpt') {
+                callChatGPTAPI(userMessage);
+            } else if (section === 'gemini') {
+                callGeminiAPI(userMessage);
+            }
+        }, 1000);
+    }, 2000);
 }
 
-// Append messages to chat box
-function appendMessage(chatBox, message, className) {
-  const p = document.createElement('p');
-  p.textContent = message;
-  p.className = className;
-  chatBox.appendChild(p);
-  chatBox.scrollTop = chatBox.scrollHeight;
+// Function to add messages to the chat box
+function addMessageToChat(section, message) {
+    const chatBox = document.getElementById(`${section}-chat-box`);
+    const messageElement = document.createElement('p');
+    
+    if (section === 'chatgpt') {
+        messageElement.classList.add('bot-message');
+    } else {
+        messageElement.classList.add('gemini-message');
+    }
+
+    messageElement.textContent = message;
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Loading indicator toggle
-function toggleLoading(show, section) {
-  const loadingIndicator = document.getElementById(`${section}-loading`);
-  if (show) {
-    loadingIndicator.style.display = 'block';
-  } else {
-    loadingIndicator.style.display = 'none';
-  }
+// Function to call the ChatGPT API via GET request
+async function callChatGPTAPI(message) {
+    const chatBox = document.getElementById('chatgpt-chat-box');
+
+    try {
+        const response = await fetch(`/api/chatgpt?message=${encodeURIComponent(message)}`);
+        const data = await response.json();
+
+        if (data.reply) {
+            addMessageToChat('chatgpt', `Bot: ${data.reply}`);
+        } else {
+            addMessageToChat('chatgpt', 'Bot: Error - No response from ChatGPT');
+        }
+    } catch (error) {
+        console.error('Error in ChatGPT API call:', error);
+        addMessageToChat('chatgpt', 'Bot: Something went wrong. Please try again.');
+    }
 }
+
+// Function to call the Gemini API via GET request
+async function callGeminiAPI(message) {
+    const chatBox = document.getElementById('gemini-chat-box');
+
+    try {
+        const response = await fetch(`/api/gemini?message=${encodeURIComponent(message)}`);
+        const data = await response.json();
+
+        if (data.reply) {
+            addMessageToChat('gemini', `Bot: ${data.reply}`);
+        } else {
+            addMessageToChat('gemini', 'Bot: Error - No response from Gemini');
+        }
+    } catch (error) {
+        console.error('Error in Gemini API call:', error);
+        addMessageToChat('gemini', 'Bot: Something went wrong. Please try again.');
+    }
+                                                            }
