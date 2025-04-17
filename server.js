@@ -1,98 +1,89 @@
+// server.js
+
+require('dotenv').config();
 const express = require('express');
-const dotenv = require('dotenv');
 const axios = require('axios');
+const path = require('path');
 const cors = require('cors');
 
-// Load environment variables
-dotenv.config();
-
-// Initialize the app
+// Create an Express application
 const app = express();
-const port = process.env.PORT || 3000;
 
-// Middleware
+// Middleware for parsing JSON and handling CORS
 app.use(express.json());
 app.use(cors());
 
-// API keys from .env
-const chatgptApiKey = process.env.CHATGPT_API_KEY;
-const geminiApiKey = process.env.GEMINI_API_KEY;
+// Set the port for the server
+const PORT = process.env.PORT || 5000;
 
-// Routes
+// Serve static files (HTML, CSS, JS) from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Test Route to check if server is working
+// Test route
 app.get('/test', (req, res) => {
-  res.status(200).json({ message: 'Server is working' });
+  res.send('Server is working fine!');
 });
 
-// Route to handle ChatGPT API request
-app.post('/chatgpt', async (req, res) => {
-  const { message } = req.body;
-  try {
-    const response = await axios.post(
-      'https://api.openai.com/v1/completions',
-      {
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: message }],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${chatgptApiKey}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+// Route for calling the ChatGPT API
+app.post('/api/chatgpt', async (req, res) => {
+  const userMessage = req.body.message;
+  
+  if (!userMessage) {
+    return res.status(400).send({ error: 'Message is required' });
+  }
 
-    if (response.data.choices && response.data.choices.length > 0) {
-      res.status(200).json({
-        reply: response.data.choices[0].message.content,
-      });
-    } else {
-      res.status(500).json({ error: 'Failed to get response from ChatGPT' });
-    }
+  try {
+    const response = await axios.post('https://api.openai.com/v1/completions', {
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: userMessage }]
+    }, {
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const botMessage = response.data.choices[0].message.content;
+    res.send({ reply: botMessage });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Something went wrong with ChatGPT' });
+    console.error('Error calling ChatGPT API:', error);
+    res.status(500).send({ error: 'An error occurred while communicating with ChatGPT.' });
   }
 });
 
-// Route to handle Gemini API request
-app.post('/gemini', async (req, res) => {
-  const { message } = req.body;
-  try {
-    const response = await axios.post(
-      'https://api.gemini.com/v1/chat',
-      {
-        query: message,
-        max_tokens: 150,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${geminiApiKey}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+// Route for calling the Gemini API
+app.post('/api/gemini', async (req, res) => {
+  const userMessage = req.body.message;
+  
+  if (!userMessage) {
+    return res.status(400).send({ error: 'Message is required' });
+  }
 
-    if (response.data.reply) {
-      res.status(200).json({
-        reply: response.data.reply,
-      });
-    } else {
-      res.status(500).json({ error: 'Failed to get response from Gemini' });
-    }
+  try {
+    const response = await axios.post('https://api.gemini.com/v1/chat', {
+      query: userMessage,
+      max_tokens: 150
+    }, {
+      headers: {
+        'Authorization': `Bearer ${process.env.GEMINI_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const botMessage = response.data.reply;
+    res.send({ reply: botMessage });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Something went wrong with Gemini' });
+    console.error('Error calling Gemini API:', error);
+    res.status(500).send({ error: 'An error occurred while communicating with Gemini.' });
   }
 });
 
-// Route for the home page
-app.get('/', (req, res) => {
-  res.send('Welcome to the Chatbot API');
+// Catch-all route to serve index.html for any unknown routes (SPA behavior)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start server
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
