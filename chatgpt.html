@@ -1,43 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChatGPT</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-  <div class="container">
-    <h1>ChatGPT</h1>
-
-    <!-- Chatbox -->
-    <div id="chatgpt-chat-box" class="chat-box"></div>
-
-    <!-- Input Section -->
-    <textarea id="chatgpt-input" placeholder="Ask something..."></textarea>
-
-    <!-- Buttons -->
-    <button id="chatgpt-send-button">Send</button>
-    <button id="clear-chat-button">Clear Chat</button>
-    <button id="download-chat">Download Chat</button>
-
-    <!-- Speech-to-Text and Voice Output -->
-    <button id="speech-to-text">🎤</button>
-    <button id="voice-output">🔊</button>
-
-    <!-- Dark Mode Toggle -->
-    <label for="dark-mode-toggle">Dark Mode:</label>
-    <input type="checkbox" id="dark-mode-toggle">
-
-    <!-- Emoji Picker -->
-    <button id="emoji-picker">😊</button>
-
-    <p id="message-status" style="display:none;">Message Sent!</p>
-
+    <div id="chatgpt-chat-container">
+        <div id="chatgpt-chat-box" class="chat-box"></div>
+        <input type="text" id="chatgpt-input" placeholder="Type your message...">
+        <button id="chatgpt-send-button">Send</button>
+    </div>
     <script src="app.js"></script>
-  </div>
 </body>
-
 </html>
