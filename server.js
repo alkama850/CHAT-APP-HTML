@@ -1,59 +1,70 @@
-const express = require('express');
-const fetch = require('node-fetch');
 require('dotenv').config();
 
+const express = require('express');
+const fetch = require('node-fetch');
 const app = express();
-const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
 // ChatGPT API endpoint
 app.post('/chatgpt', async (req, res) => {
   const message = req.body.message;
-  const apiKey = process.env.CHATGPT_API_KEY;
 
   try {
     const response = await fetch('https://api.openai.com/v1/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
+        'Authorization': `Bearer ${process.env.CHATGPT_API_KEY}`,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: message }]
-      })
+        messages: [{ role: 'user', content: message }],
+      }),
     });
+
     const data = await response.json();
-    res.json({ reply: data.choices[0].message.content });
+
+    if (data.choices && data.choices.length > 0) {
+      res.json({ reply: data.choices[0].message.content });
+    } else {
+      res.status(500).json({ error: 'Error retrieving response from ChatGPT' });
+    }
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ reply: 'Error fetching response from ChatGPT.' });
+    res.status(500).json({ error: 'Failed to connect to ChatGPT API' });
   }
 });
 
-// Gemini API endpoint (Replace with the actual endpoint)
+// Gemini API endpoint
 app.post('/gemini', async (req, res) => {
   const message = req.body.message;
-  const apiKey = process.env.GEMINI_API_KEY;
 
   try {
     const response = await fetch('https://api.gemini.com/v1/chat', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
+        'Authorization': `Bearer ${process.env.GEMINI_API_KEY}`,
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ query: message, max_tokens: 150 })
+      body: JSON.stringify({
+        query: message,
+        max_tokens: 150,
+      }),
     });
+
     const data = await response.json();
-    res.json({ reply: data.reply });
+
+    if (data.reply) {
+      res.json({ reply: data.reply });
+    } else {
+      res.status(500).json({ error: 'Error retrieving response from Gemini' });
+    }
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ reply: 'Error fetching response from Gemini.' });
+    res.status(500).json({ error: 'Failed to connect to Gemini API' });
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+// Server setup
+app.listen(3000, () => {
+  console.log('Server is running on http://localhost:3000');
 });
