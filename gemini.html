@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gemini</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Chat</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="gemini-chat-box" class="chat-box"></div>
-  <div class="input-area">
-    <input type="text" id="gemini-input" placeholder="Type your message...">
-    <button id="gemini-send-button">Send</button>
-    <button id="gemini-retry-button">Retry</button>
-    <button id="gemini-copy-button">Copy</button>
-  </div>
-  <div class="loading-indicator" id="gemini-loading">Gemini is typing...</div>
-  <script src="app.js"></script>
+    <div class="chat-container">
+        <div class="header">
+            <h1>Gemini</h1>
+            <button id="dark-mode-toggle">Toggle Dark Mode</button>
+        </div>
+
+        <div id="gemini-chat-box" class="chat-box"></div>
+
+        <div class="input-container">
+            <textarea id="gemini-input" placeholder="Type your message..." rows="2"></textarea>
+            <button id="gemini-send-button">Send</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
