@@ -1,77 +1,59 @@
-// Import required packages
 const express = require('express');
-const axios = require('axios');
-const dotenv = require('dotenv');
+const fetch = require('node-fetch');
+require('dotenv').config();
 
-// Initialize dotenv to read from .env file
-dotenv.config();
-
-// Create an Express app
 const app = express();
+const port = process.env.PORT || 3000;
 
-// Middleware to parse JSON
 app.use(express.json());
 
-// Define API URLs for ChatGPT and Gemini
-const chatgptApiUrl = 'https://api.openai.com/v1/completions'; // ChatGPT URL
-const geminiApiUrl = 'https://api.gemini.com/v1/completions'; // Gemini URL
-
-// ChatGPT endpoint
-app.post('/api/chatgpt', async (req, res) => {
-  const { message } = req.body;
-  
-  if (!message) {
-    return res.status(400).json({ error: 'Message is required' });
-  }
+// ChatGPT API endpoint
+app.post('/chatgpt', async (req, res) => {
+  const message = req.body.message;
+  const apiKey = process.env.CHATGPT_API_KEY;
 
   try {
-    const response = await axios.post(chatgptApiUrl, {
-      model: 'gpt-4', // Use GPT-4 model
-      prompt: message,
-      max_tokens: 150,
-    }, {
+    const response = await fetch('https://api.openai.com/v1/completions', {
+      method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.CHATGPT_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: message }]
+      })
     });
-    
-    res.json({ response: response.data.choices[0].text.trim() });
+    const data = await response.json();
+    res.json({ reply: data.choices[0].message.content });
   } catch (error) {
-    console.error('Error calling ChatGPT API', error);
-    res.status(500).json({ error: 'Failed to communicate with ChatGPT' });
+    console.error('Error:', error);
+    res.status(500).json({ reply: 'Error fetching response from ChatGPT.' });
   }
 });
 
-// Gemini endpoint
-app.post('/api/gemini', async (req, res) => {
-  const { message } = req.body;
-
-  if (!message) {
-    return res.status(400).json({ error: 'Message is required' });
-  }
+// Gemini API endpoint (Replace with the actual endpoint)
+app.post('/gemini', async (req, res) => {
+  const message = req.body.message;
+  const apiKey = process.env.GEMINI_API_KEY;
 
   try {
-    const response = await axios.post(geminiApiUrl, {
-      model: 'gemini-1', // Use Gemini model
-      prompt: message,
-      max_tokens: 150,
-    }, {
+    const response = await fetch('https://api.gemini.com/v1/chat', {
+      method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.GEMINI_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({ query: message, max_tokens: 150 })
     });
-
-    res.json({ response: response.data.choices[0].text.trim() });
+    const data = await response.json();
+    res.json({ reply: data.reply });
   } catch (error) {
-    console.error('Error calling Gemini API', error);
-    res.status(500).json({ error: 'Failed to communicate with Gemini' });
+    console.error('Error:', error);
+    res.status(500).json({ reply: 'Error fetching response from Gemini.' });
   }
 });
 
-// Start server
-const port = process.env.PORT || 5000;
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
