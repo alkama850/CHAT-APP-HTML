@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatGPT</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="chatgpt-chat-container">
-        <div id="chatgpt-chat-box" class="chat-box"></div>
-        <input type="text" id="chatgpt-input" placeholder="Type your message...">
-        <button id="chatgpt-send-button">Send</button>
-    </div>
-    <script src="app.js"></script>
+  <div id="chatgpt-chat-box" class="chat-box"></div>
+  <div class="input-area">
+    <input type="text" id="chatgpt-input" placeholder="Type your message...">
+    <button id="chatgpt-send-button">Send</button>
+    <button id="chatgpt-retry-button">Retry</button>
+    <button id="chatgpt-copy-button">Copy</button>
+  </div>
+  <div class="loading-indicator" id="chatgpt-loading">ChatGPT is typing...</div>
+  <script src="app.js"></script>
 </body>
 </html>
