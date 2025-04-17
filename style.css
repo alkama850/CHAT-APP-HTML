@@ -1,167 +1,86 @@
-/* Global Styles */
+/* Basic Styles */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
-  transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    color: #333;
 }
 
-.container {
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+.dark-mode {
+    background-color: #181818;
+    color: white;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 2rem;
-  color: #333;
+#app-container, #chatgpt-chat-container, #gemini-chat-container {
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
 }
 
-/* Chatbox Styles */
+.chat-button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.chat-button:hover {
+    background-color: #45a049;
+}
+
 .chat-box {
-  border: 1px solid #ddd;
-  padding: 10px;
-  height: 300px;
-  overflow-y: scroll;
-  background-color: white;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  position: relative;
+    border: 1px solid #ddd;
+    padding: 10px;
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 5px;
 }
 
-.chat-box p {
-  margin: 0;
-  padding: 5px 0;
-}
-
-.chat-box .bot-message {
-  color: #007bff;
-}
-
-.chat-box .gemini-message {
-  color: #28a745;
-}
-
-.chat-box p {
-  animation: slideIn 0.5s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
-  min-height: 50px;
-  box-sizing: border-box;
+input {
+    padding: 10px;
+    width: 80%;
+    font-size: 16px;
+    margin-right: 10px;
+    border-radius: 5px;
 }
 
 button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 10px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
 }
 
-button:hover {
-  background-color: #0056b3;
+input:focus {
+    outline: none;
+    border: 2px solid #4CAF50;
 }
 
-/* Dark Mode Styles */
-.dark-mode {
-  background-color: #333;
-  color: white;
+.dark-mode-container {
+    margin-top: 20px;
 }
 
-.dark-mode .chat-box {
-  background-color: #444;
-  border: 1px solid #666;
+/* Dark Mode */
+.dark-mode #chatgpt-chat-box, .dark-mode #gemini-chat-box {
+    background-color: #333;
+    color: white;
 }
 
-.dark-mode button {
-  background-color: #555;
-}
-
-.dark-mode input[type="checkbox"] {
-  background-color: #555;
-}
-
-/* Speech and Text styles */
-button#speech-to-text,
-button#voice-output {
-  background-color: #f39c12;
-  margin-right: 10px;
-}
-
-button#speech-to-text:hover,
-button#voice-output:hover {
-  background-color: #e67e22;
-}
-
-/* Clear Chat button */
-button#clear-chat-button {
-  background-color: #e74c3c;
-  margin-top: 15px;
-}
-
-button#clear-chat-button:hover {
-  background-color: #c0392b;
-}
-
-/* Emoji Picker Styles */
-button#emoji-picker {
-  background-color: #9b59b6;
-  margin-top: 10px;
-}
-
-button#emoji-picker:hover {
-  background-color: #8e44ad;
-}
-
-/* Page Layout */
-textarea, button {
-  display: block;
-  width: 100%;
-}
-
-#chatgpt-send-button, #gemini-send-button {
-  width: auto;
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-input[type="checkbox"] {
-  margin-top: 10px;
-  margin-bottom: 20px;
-  margin-left: 10px;
-}
-
-/* Message Status */
-#message-status {
-  text-align: center;
-  color: #28a745;
-  font-size: 16px;
-  margin-top: 10px;
+.dark-mode input, .dark-mode button {
+    background-color: #555;
+    color: white;
 }
